@@ -36,10 +36,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (!result.success) {
-      return NextResponse.json(
-        { error: result.error || "Proof verification failed" },
-        { status: 400 }
-      );
+      // Handle World ID API error responses that include detail field
+      const errorMessage =
+        result.detail || result.error || "Proof verification failed";
+      return NextResponse.json({ error: errorMessage }, { status: 400 });
     }
 
     const response = {

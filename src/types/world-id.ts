@@ -61,6 +61,7 @@ export interface ProofVerificationResponse {
 export interface ProofVerificationResult {
   success: boolean;
   error?: string;
+  detail?: string; // World ID API error detail field
   uses?: number;
   action?: string;
   max_uses?: number;

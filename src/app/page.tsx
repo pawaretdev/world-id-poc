@@ -4,7 +4,6 @@ import { ProofVerificationButton } from "@/components/proof-verification-button"
 import { SignInButton } from "@/components/sign-in-button";
 import { UserInfo } from "@/components/user-info";
 import { ProofVerificationResult, WorldIdUser } from "@/types/world-id";
-import { AlertCircle } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
@@ -110,10 +109,10 @@ export default function Home() {
           {/* Error Display */}
           {error && (
             <div className="bg-[#2A2A2A] border border-[#EF4444] rounded-xl p-4 animate-fade-in">
-              <div className="flex items-center space-x-3">
-                <div className="w-5 h-5 bg-[#EF4444] rounded-full flex items-center justify-center">
-                  <AlertCircle className="w-3 h-3 text-white" />
-                </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-sm font-medium text-[#EF4444]">
+                  Proof verification failed!
+                </span>
                 <span className="text-sm font-medium">{error}</span>
               </div>
             </div>
@@ -166,7 +165,7 @@ export default function Home() {
               />
 
               {/* Proof Verification Section */}
-              {!proofVerificationResult && (
+              {!error && !proofVerificationResult && (
                 <div className="bg-[#2A2A2A] rounded-xl p-6 border border-[#333333]">
                   <div className="flex flex-col items-center text-center space-y-4">
                     <h3 className="text-xl font-semibold">

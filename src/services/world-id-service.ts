@@ -159,6 +159,13 @@ export class WorldIdService {
         };
       }
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
+        // Return the World ID API error response as-is to preserve detail field
+        return {
+          success: false,
+          ...error.response.data,
+        };
+      }
       console.error("Error verifying proof:", error);
       return {
         success: false,

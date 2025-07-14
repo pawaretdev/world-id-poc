@@ -43,7 +43,9 @@ export function ProofVerificationButton({
       if (result.success) {
         onVerificationSuccess?.(result);
       } else {
-        onVerificationError?.(result.error || "Verification failed");
+        // Handle error response - the API now returns the detail field
+        const errorMessage = result.error || "Verification failed";
+        onVerificationError?.(errorMessage);
       }
     } catch (error) {
       const errorMessage =

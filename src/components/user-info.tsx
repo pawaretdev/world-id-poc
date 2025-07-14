@@ -1,6 +1,7 @@
 "use client";
 
 import { WorldIdUser } from "@/types/world-id";
+import Image from "next/image";
 
 interface UserInfoProps {
   user: WorldIdUser;
@@ -26,9 +27,11 @@ export function UserInfo({ user, isOrbVerified, onSignOut }: UserInfoProps) {
       <div className="space-y-3">
         {user.picture && (
           <div className="flex justify-center mb-4">
-            <img
+            <Image
               src={user.picture}
               alt="Profile"
+              width={64}
+              height={64}
               className="w-16 h-16 rounded-full"
             />
           </div>

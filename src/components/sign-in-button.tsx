@@ -4,12 +4,10 @@ import { WorldIdService } from "@/services/world-id-service";
 import { useState } from "react";
 
 interface SignInButtonProps {
-  onSignInSuccess?: (user: any) => void;
   onSignInError?: (error: string) => void;
 }
 
 export function SignInButton({
-  onSignInSuccess,
   onSignInError,
 }: SignInButtonProps) {
   const [isLoading, setIsLoading] = useState(false);

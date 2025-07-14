@@ -1,12 +1,11 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default function WorldCoinCallback() {
+function WorldCoinCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isProcessing, setIsProcessing] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -18,13 +17,11 @@ export default function WorldCoinCallback() {
 
         if (error) {
           setError(`Authorization failed: ${error}`);
-          setIsProcessing(false);
           return;
         }
 
         if (!code) {
           setError("No authorization code received");
-          setIsProcessing(false);
           return;
         }
 
@@ -39,7 +36,6 @@ export default function WorldCoinCallback() {
       } catch (error) {
         console.error("Error processing callback:", error);
         setError("Failed to process authorization callback");
-        setIsProcessing(false);
       }
     };
 
@@ -75,5 +71,22 @@ export default function WorldCoinCallback() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function WorldCoinCallback() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground mx-auto mb-4"></div>
+            <h1 className="text-2xl font-bold mb-2">Loading...</h1>
+          </div>
+        </div>
+      }
+    >
+      <WorldCoinCallbackContent />
+    </Suspense>
   );
 }

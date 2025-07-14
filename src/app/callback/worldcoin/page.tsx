@@ -6,6 +6,7 @@ import { Suspense, useEffect, useState } from "react";
 function WorldCoinCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  console.log("🚀 searchParams:", searchParams)
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

@@ -6,10 +6,9 @@ import {
 import axios from "axios";
 
 export class WorldIdService {
-  private static readonly TOKEN_ENDPOINT =
-    "https://id.worldcoin.org/oauth/token";
+  private static readonly TOKEN_ENDPOINT = "https://id.worldcoin.org/token";
   private static readonly USERINFO_ENDPOINT =
-    "https://id.worldcoin.org/oauth/userinfo";
+    "https://id.worldcoin.org/userinfo";
   private static readonly CLIENT_ID =
     process.env.NEXT_PUBLIC_WORLD_ID_CLIENT_ID || "";
   private static readonly CLIENT_SECRET =
@@ -112,6 +111,6 @@ export class WorldIdService {
       ...(state && { state }),
     });
 
-    return `https://id.worldcoin.org/oauth/authorize?${params.toString()}`;
+    return `https://id.worldcoin.org/authorize?${params.toString()}`;
   }
 }

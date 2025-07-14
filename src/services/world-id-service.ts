@@ -107,7 +107,7 @@ export class WorldIdService {
       response_type: "code",
       client_id: this.CLIENT_ID,
       redirect_uri: redirectUri,
-      scope: "openid email profile",
+      scope: "openid",
       ...(state && { state }),
     });
 

@@ -1,25 +1,21 @@
 "use client";
 
 import { WorldIdService } from "@/services/world-id-service";
+import Image from "next/image";
 import { useState } from "react";
 
 interface SignInButtonProps {
   onSignInError?: (error: string) => void;
 }
 
-export function SignInButton({
-  onSignInError,
-}: SignInButtonProps) {
+export function SignInButton({ onSignInError }: SignInButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignIn = async () => {
     setIsLoading(true);
 
     try {
-      const redirectUri = `${window.location.origin}/callback/worldcoin`;
-      const authorizationUrl = WorldIdService.getAuthorizationUrl(redirectUri);
-
-      // Redirect to World ID authorization
+      const authorizationUrl = WorldIdService.getAuthorizationUrl();
       window.location.href = authorizationUrl;
     } catch (error) {
       setIsLoading(false);
@@ -33,24 +29,23 @@ export function SignInButton({
     <button
       onClick={handleSignIn}
       disabled={isLoading}
-      className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+      className="bg-[#F5C542] hover:bg-[#D1A24E] disabled:bg-[#666666] text-[#1A1A1A] font-semibold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 disabled:transform-none disabled:cursor-not-allowed flex items-center justify-center space-x-3 min-w-[200px] shadow-lg hover:shadow-xl"
     >
       {isLoading ? (
         <>
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-          Signing in...
+          <div className="w-5 h-5 border-2 border-[#1A1A1A] border-t-transparent rounded-full animate-spin"></div>
+          <span>Signing in...</span>
         </>
       ) : (
         <>
-          <svg
-            className="w-5 h-5"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-          </svg>
-          Sign in with World ID
+          <Image
+            src="/world-id.webp"
+            alt="World ID"
+            width={20}
+            height={20}
+            className="w-5 h-5 object-cover"
+          />
+          <span>Sign in with World ID</span>
         </>
       )}
     </button>

@@ -15,6 +15,28 @@ export class WorldIdService {
     process.env.WORLD_ID_CLIENT_SECRET || "";
 
   /**
+   * Get the appropriate redirect URI based on environment
+   */
+  private static getRedirectUri(): string {
+    const isDevelopment = process.env.NODE_ENV === "development";
+    const baseUrl = isDevelopment
+      ? "https://be.pawaret.uk"
+      : "https://world.pawaret.dev";
+
+    return `${baseUrl}/callback/world-id`;
+  }
+
+  /**
+   * Get the base URL for the current environment
+   */
+  public static getBaseUrl(): string {
+    const isDevelopment = process.env.NODE_ENV === "development";
+    return isDevelopment
+      ? "https://be.pawaret.uk"
+      : "https://world.pawaret.dev";
+  }
+
+  /**
    * Exchange authorization code for access token
    */
   public static async exchangeCodeForToken(
@@ -77,9 +99,9 @@ export class WorldIdService {
       // Get user info
       const userInfo = await this.getUserInfo(tokenResponse.access_token);
 
-      // Check if user is verified with Orb (this would typically involve additional verification)
-      // For now, we'll assume all users with valid tokens are verified
-      const isOrbVerified = true; // This would need to be implemented based on your specific requirements
+      // Check if user is verified with Orb based on verification_level
+      const isOrbVerified =
+        userInfo["https://id.worldcoin.org/v1"]?.verification_level === "orb";
 
       return {
         success: true,
@@ -100,13 +122,15 @@ export class WorldIdService {
    * Get World ID authorization URL
    */
   public static getAuthorizationUrl(
-    redirectUri: string,
+    redirectUri?: string,
     state?: string
   ): string {
+    const finalRedirectUri = redirectUri || this.getRedirectUri();
+
     const params = new URLSearchParams({
       response_type: "code",
       client_id: this.CLIENT_ID,
-      redirect_uri: redirectUri,
+      redirect_uri: finalRedirectUri,
       scope: "openid",
       ...(state && { state }),
     });

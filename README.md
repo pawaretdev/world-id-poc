@@ -1,4 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# World ID Demo
+
+A modern, minimal World ID authentication demo built with Next.js, TypeScript, and Tailwind CSS.
+
+## Features
+
+- 🔐 **World ID Authentication** - Secure identity verification using World ID
+- 🎨 **Minimal Dark UI** - Clean, modern interface with dark theme
+- 📱 **Responsive Design** - Optimized for all device sizes
+- ⚡ **Fast Performance** - Built with Next.js 15 and optimized for speed
+- 🎯 **TypeScript** - Full type safety throughout the application
+- 🌐 **Multi-Environment** - Automatic domain switching for dev/prod
+
+## Design System
+
+This project uses a minimal dark UI design inspired by modern web applications:
+
+- **Colors**: Dark theme with `#1A1A1A` background and `#F5C542` accent
+- **Typography**: Poppins font family for clean, readable text
+- **Components**: Rounded corners, subtle shadows, and smooth animations
+- **Layout**: Clean spacing and intuitive user flow
+
+## Domain Configuration
+
+The application automatically switches between domains based on the environment:
+
+- **Development** (`NODE_ENV=development`): `https://be.pawaret.uk`
+- **Production** (`NODE_ENV=production`): `https://world.pawaret.dev`
 
 ## Getting Started
 
@@ -6,28 +33,45 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [https://be.pawaret.uk](https://be.pawaret.uk) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   ├── callback/          # OAuth callback pages
+│   ├── globals.css        # Global styles with Tailwind
+│   ├── layout.tsx         # Root layout with Poppins font
+│   └── page.tsx           # Main application page
+├── components/            # Reusable UI components
+│   ├── sign-in-button.tsx # World ID sign-in component
+│   └── user-info.tsx      # User profile display
+├── services/              # Business logic services
+│   └── world-id-service.ts # World ID integration
+└── types/                 # TypeScript type definitions
+    └── world-id.ts        # World ID related types
+```
+
+## Technologies Used
+
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type-safe JavaScript
+- **Tailwind CSS** - Utility-first CSS framework
+- **World ID** - Decentralized identity verification
+- **Poppins Font** - Modern, clean typography
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+To learn more about the technologies used:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [Next.js Documentation](https://nextjs.org/docs)
+- [World ID Documentation](https://docs.worldcoin.org/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 
 ## Deploy on Vercel
 

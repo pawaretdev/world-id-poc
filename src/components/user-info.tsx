@@ -1,7 +1,7 @@
 "use client";
 
 import { WorldIdUser } from "@/types/world-id";
-import Image from "next/image";
+import { AlertTriangle, CheckCircle2 } from "lucide-react";
 
 interface UserInfoProps {
   user: WorldIdUser;
@@ -11,115 +11,68 @@ interface UserInfoProps {
 
 export function UserInfo({ user, isOrbVerified, onSignOut }: UserInfoProps) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-md mx-auto">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-          User Information
-        </h2>
+    <div className="bg-[#2A2A2A] rounded-xl p-6 flex flex-col gap-6 border border-[#333333] animate-fade-in">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-10">
+        <h2 className="text-xl font-semibold text-white">User Information</h2>
         <button
           onClick={onSignOut}
-          className="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+          className="text-[#EF4444] hover:text-[#F87171] text-sm font-medium transition-colors"
         >
           Sign Out
         </button>
       </div>
 
-      <div className="space-y-3">
-        {user.picture && (
-          <div className="flex justify-center mb-4">
-            <Image
-              src={user.picture}
-              alt="Profile"
-              width={64}
-              height={64}
-              className="w-16 h-16 rounded-full"
-            />
-          </div>
-        )}
-
-        <div className="border-b border-gray-200 dark:border-gray-700 pb-2">
-          <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            User ID
-          </label>
-          <p className="text-sm text-gray-900 dark:text-white font-mono">
-            {user.sub}
-          </p>
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Left Side - User Details */}
+        <div className="flex-1 flex items-center justify-center">
+          <h3 className="text-2xl font-bold text-white">
+            {user.name || "Anonymous User"}
+          </h3>
         </div>
 
-        {user.name && (
-          <div className="border-b border-gray-200 dark:border-gray-700 pb-2">
-            <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Name
+        {/* Right Side - Stats */}
+        <div className="flex-1 flex flex-col gap-4">
+          {/* User ID */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-[#999999] uppercase tracking-wide">
+              User ID
             </label>
-            <p className="text-sm text-gray-900 dark:text-white">{user.name}</p>
+            <p className="text-sm font-mono text-white bg-[#333333] px-3 py-2 rounded-lg break-all">
+              {user.sub}
+            </p>
           </div>
-        )}
 
-        {user.email && (
-          <div className="border-b border-gray-200 dark:border-gray-700 pb-2">
-            <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
+          {/* Email */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-[#999999] uppercase tracking-wide">
               Email
             </label>
-            <p className="text-sm text-gray-900 dark:text-white">
-              {user.email}
+            <p className="text-sm text-white bg-[#333333] px-3 py-2 rounded-lg">
+              {user.email ?? "No Email"}
             </p>
-            {user.email_verified && (
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 ml-2">
-                Verified
-              </span>
-            )}
           </div>
-        )}
 
-        <div className="border-b border-gray-200 dark:border-gray-700 pb-2">
-          <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
-            Orb Verification
-          </label>
-          <div className="flex items-center mt-1">
-            {isOrbVerified ? (
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                <svg
-                  className="w-3 h-3 mr-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Verified with Orb
-              </span>
-            ) : (
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                <svg
-                  className="w-3 h-3 mr-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Not Orb Verified
-              </span>
-            )}
+          {/* Orb Verification Status */}
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-[#999999] uppercase tracking-wide">
+              Verification
+            </label>
+            <div className="flex items-center space-x-2">
+              {isOrbVerified ? (
+                <span className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-[#10B981] text-white">
+                  <CheckCircle2 className="w-3 h-3 mr-1" />
+                  Orb Verified
+                </span>
+              ) : (
+                <span className="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium bg-[#F59E0B] text-white">
+                  <AlertTriangle className="w-3 h-3 mr-1" />
+                  Device Only
+                </span>
+              )}
+            </div>
           </div>
         </div>
-
-        {user.updated_at && (
-          <div>
-            <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              Last Updated
-            </label>
-            <p className="text-sm text-gray-900 dark:text-white">
-              {new Date(user.updated_at).toLocaleDateString()}
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );

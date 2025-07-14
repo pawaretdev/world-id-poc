@@ -1,80 +1,133 @@
-# World ID Demo
+# World ID Demo Application
 
-A modern, minimal World ID authentication demo built with Next.js, TypeScript, and Tailwind CSS.
+A Next.js application demonstrating World ID integration with both OAuth authentication and zero-knowledge proof verification.
 
 ## Features
 
-- 🔐 **World ID Authentication** - Secure identity verification using World ID
-- 🎨 **Minimal Dark UI** - Clean, modern interface with dark theme
-- 📱 **Responsive Design** - Optimized for all device sizes
-- ⚡ **Fast Performance** - Built with Next.js 15 and optimized for speed
-- 🎯 **TypeScript** - Full type safety throughout the application
-- 🌐 **Multi-Environment** - Automatic domain switching for dev/prod
+- **OAuth Authentication**: Sign in with World ID using the OAuth flow
+- **Proof Verification**: Verify user identity using World ID's zero-knowledge proof system
+- **User Information Display**: Show user details and verification status
+- **Modern UI**: Clean, responsive interface with Tailwind CSS
 
-## Design System
+## Prerequisites
 
-This project uses a minimal dark UI design inspired by modern web applications:
+- Node.js 18+
+- World ID App ID (for proof verification)
+- World ID Client ID and Secret (for OAuth)
+- WalletConnect Project ID (optional, for wallet integration)
 
-- **Colors**: Dark theme with `#1A1A1A` background and `#F5C542` accent
-- **Typography**: Poppins font family for clean, readable text
-- **Components**: Rounded corners, subtle shadows, and smooth animations
-- **Layout**: Clean spacing and intuitive user flow
+## Environment Variables
 
-## Domain Configuration
+Create a `.env.local` file in the root directory:
 
-The application automatically switches between domains based on the environment:
+```env
+# World ID OAuth (for sign-in functionality)
+NEXT_PUBLIC_WORLD_ID_CLIENT_ID=your_client_id_here
+WORLD_ID_CLIENT_SECRET=your_client_secret_here
 
-- **Development** (`NODE_ENV=development`): `https://be.pawaret.uk`
-- **Production** (`NODE_ENV=production`): `https://world.pawaret.dev`
+# World ID Proof Verification
+NEXT_PUBLIC_WORLD_ID_APP_ID=app_staging_your_app_id_here
+
+# WalletConnect (optional)
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_wallet_connect_project_id_here
+```
 
 ## Getting Started
 
-First, run the development server:
+1. **Install dependencies**:
 
-```bash
-npm run dev
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment variables**:
+
+   - Get your World ID credentials from the [World ID Developer Portal](https://developer.worldcoin.org/)
+   - Add them to your `.env.local` file
+
+3. **Run the development server**:
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser**:
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## How It Works
+
+### OAuth Authentication Flow
+
+1. User clicks "Sign in with World ID"
+2. Redirected to World ID authorization page
+3. User authenticates and authorizes the application
+4. Redirected back to the callback page
+5. Authorization code is exchanged for user information
+6. User information is displayed
+
+### Proof Verification Flow
+
+1. User clicks "Verify with World ID" (requires prior sign-in)
+2. World ID IDKit widget opens
+3. User generates a zero-knowledge proof
+4. Proof is sent to the verification API
+5. Verification result is displayed
+
+## API Endpoints
+
+### POST `/api/verify-world-id`
+
+Handles OAuth token verification for user authentication.
+
+```json
+{
+  "code": "authorization_code",
+  "redirectUri": "callback_url"
+}
 ```
 
-Open [https://be.pawaret.uk](https://be.pawaret.uk) with your browser to see the result.
+### POST `/api/verify-proof`
 
-## Project Structure
+Handles zero-knowledge proof verification.
 
+```json
+{
+  "merkle_root": "proof_merkle_root",
+  "nullifier_hash": "proof_nullifier_hash",
+  "proof": "proof_data",
+  "credential_type": "orb",
+  "action": "action_id",
+  "signal": "user_signal"
+}
 ```
-src/
-├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   ├── callback/          # OAuth callback pages
-│   ├── globals.css        # Global styles with Tailwind
-│   ├── layout.tsx         # Root layout with Poppins font
-│   └── page.tsx           # Main application page
-├── components/            # Reusable UI components
-│   ├── sign-in-button.tsx # World ID sign-in component
-│   └── user-info.tsx      # User profile display
-├── services/              # Business logic services
-│   └── world-id-service.ts # World ID integration
-└── types/                 # TypeScript type definitions
-    └── world-id.ts        # World ID related types
-```
+
+## Components
+
+- `SignInButton`: Handles OAuth authentication
+- `ProofVerificationButton`: Handles zero-knowledge proof verification
+- `UserInfo`: Displays user information and verification status
 
 ## Technologies Used
 
-- **Next.js 15** - React framework with App Router
-- **TypeScript** - Type-safe JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
-- **World ID** - Decentralized identity verification
-- **Poppins Font** - Modern, clean typography
+- **Next.js 15**: React framework with App Router
+- **TypeScript**: Type-safe JavaScript
+- **Tailwind CSS**: Utility-first CSS framework
+- **World ID IDKit**: Official World ID React components
+- **Axios**: HTTP client for API calls
 
-## Learn More
+## Development
 
-To learn more about the technologies used:
+- **Build**: `npm run build`
+- **Start**: `npm start`
+- **Lint**: `npm run lint`
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [World ID Documentation](https://docs.worldcoin.org/)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+## Deployment
 
-## Deploy on Vercel
+The application is configured for deployment on Vercel with environment-specific redirect URIs:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Development**: `https://be.pawaret.uk/callback/world-id`
+- **Production**: `https://world.pawaret.dev/callback/world-id`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT License - see LICENSE file for details.

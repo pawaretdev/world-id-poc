@@ -11,7 +11,7 @@ interface UserInfoProps {
 
 export function UserInfo({ user, isOrbVerified, onSignOut }: UserInfoProps) {
   return (
-    <div className="bg-[#2A2A2A] rounded-xl p-6 flex flex-col gap-6 border border-[#333333] animate-fade-in">
+    <div className="bg-[#2A2A2A] rounded-xl p-6 flex flex-col gap-6 border border-[#333333] animate-fade-in overflow-y-auto">
       {/* Header */}
       <div className="flex items-center justify-between gap-10">
         <h2 className="text-xl font-semibold text-white">User Information</h2>

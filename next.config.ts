@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins: ["https://be.pawaret.uk", "https://world.pawaret.dev"],
 };
 
 export default nextConfig;

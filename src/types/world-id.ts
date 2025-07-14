@@ -37,3 +37,35 @@ export interface WorldIdAuthConfig {
   redirectUri: string;
   scope: string;
 }
+
+// Proof verification types
+export interface ProofVerificationRequest {
+  merkle_root: string;
+  nullifier_hash: string;
+  proof: string;
+  verification_level: string;
+  action: string;
+}
+
+export interface ProofVerificationResponse {
+  uses: number;
+  success: boolean;
+  action: string;
+  max_uses: number;
+  nullifier_hash: string;
+  created_at: string;
+  verification_level: string;
+  message: string;
+}
+
+export interface ProofVerificationResult {
+  success: boolean;
+  error?: string;
+  uses?: number;
+  action?: string;
+  max_uses?: number;
+  nullifier_hash?: string;
+  created_at?: string;
+  verification_level?: string;
+  message?: string;
+}

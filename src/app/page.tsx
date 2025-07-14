@@ -1,8 +1,9 @@
 "use client";
 
+import { ProofVerificationButton } from "@/components/proof-verification-button";
 import { SignInButton } from "@/components/sign-in-button";
 import { UserInfo } from "@/components/user-info";
-import { WorldIdUser } from "@/types/world-id";
+import { ProofVerificationResult, WorldIdUser } from "@/types/world-id";
 import { AlertCircle } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -12,6 +13,8 @@ export default function Home() {
   const [isOrbVerified, setIsOrbVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [proofVerificationResult, setProofVerificationResult] =
+    useState<ProofVerificationResult | null>(null);
   const hasProcessedAuthCode = useRef(false);
 
   useEffect(() => {
@@ -63,11 +66,22 @@ export default function Home() {
     setUser(null);
     setIsOrbVerified(false);
     setError(null);
+    setProofVerificationResult(null);
     hasProcessedAuthCode.current = false;
   };
 
   const handleSignInError = (errorMessage: string) => {
     setError(errorMessage);
+  };
+
+  const handleProofVerificationSuccess = (result: ProofVerificationResult) => {
+    setProofVerificationResult(result);
+    setError(null);
+  };
+
+  const handleProofVerificationError = (errorMessage: string) => {
+    setError(errorMessage);
+    setProofVerificationResult(null);
   };
 
   return (
@@ -105,6 +119,31 @@ export default function Home() {
             </div>
           )}
 
+          {/* Proof Verification Success Display */}
+          {proofVerificationResult && (
+            <div className="bg-[#2A2A2A] border border-[#10B981] rounded-xl p-4 animate-fade-in">
+              <div className="flex flex-col gap-1">
+                <span className="text-sm font-medium text-[#10B981]">
+                  Proof verification successful!
+                </span>
+                <div className="flex flex-col gap-1 text-xs text-[#999999]">
+                  <span className="break-all">
+                    Nullifier Hash: {proofVerificationResult.nullifier_hash}
+                  </span>
+                  <span>Action: {proofVerificationResult.action}</span>
+                  <span>Message: {proofVerificationResult.message}</span>
+                  <span>Uses: {proofVerificationResult.uses}</span>
+                  <span>Max Uses: {proofVerificationResult.max_uses}</span>
+                  <span>
+                    Verification Level:{" "}
+                    {proofVerificationResult.verification_level}
+                  </span>
+                  <span>Created At: {proofVerificationResult.created_at}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Loading State */}
           {isLoading && (
             <div className="flex items-center justify-center py-12">
@@ -119,11 +158,33 @@ export default function Home() {
 
           {/* User Info or Sign In */}
           {user ? (
-            <UserInfo
-              user={user}
-              isOrbVerified={isOrbVerified}
-              onSignOut={handleSignOut}
-            />
+            <div className="space-y-8">
+              <UserInfo
+                user={user}
+                isOrbVerified={isOrbVerified}
+                onSignOut={handleSignOut}
+              />
+
+              {/* Proof Verification Section */}
+              {!proofVerificationResult && (
+                <div className="bg-[#2A2A2A] rounded-xl p-6 border border-[#333333]">
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    <h3 className="text-xl font-semibold">
+                      Proof Verification
+                    </h3>
+                    <p className="text-[#999999] text-sm">
+                      Verify your identity using World ID&apos;s zero-knowledge
+                      proof system.
+                    </p>
+                    <ProofVerificationButton
+                      onVerificationSuccess={handleProofVerificationSuccess}
+                      onVerificationError={handleProofVerificationError}
+                      actionId="landverse-rewards" // @note
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <div className="flex flex-col items-center max-w-md mx-auto text-center space-y-8">
               <div className="space-y-4">

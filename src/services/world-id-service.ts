@@ -1,4 +1,7 @@
 import {
+  ProofVerificationRequest,
+  ProofVerificationResponse,
+  ProofVerificationResult,
   WorldIdTokenResponse,
   WorldIdUser,
   WorldIdVerificationResult,
@@ -9,6 +12,8 @@ export class WorldIdService {
   private static readonly TOKEN_ENDPOINT = "https://id.worldcoin.org/token";
   private static readonly USERINFO_ENDPOINT =
     "https://id.worldcoin.org/userinfo";
+  private static readonly PROOF_VERIFICATION_ENDPOINT =
+    "https://developer.worldcoin.org/api/v2/verify";
   private static readonly CLIENT_ID =
     process.env.NEXT_PUBLIC_WORLD_ID_CLIENT_ID || "";
   private static readonly CLIENT_SECRET =
@@ -110,6 +115,51 @@ export class WorldIdService {
       };
     } catch (error) {
       console.error("Error verifying World ID token:", error);
+      return {
+        success: false,
+        error:
+          error instanceof Error ? error.message : "Unknown error occurred",
+      };
+    }
+  }
+
+  /**
+   * Verify World ID proof
+   */
+  public static async verifyProof(
+    proofData: ProofVerificationRequest
+  ): Promise<ProofVerificationResult> {
+    console.log("proofData:", proofData);
+    try {
+      const response = await axios.post<ProofVerificationResponse>(
+        `${this.PROOF_VERIFICATION_ENDPOINT}/${this.CLIENT_ID}`,
+        proofData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        return {
+          uses: response.data.uses,
+          success: response.data.success,
+          action: response.data.action,
+          max_uses: response.data.max_uses,
+          nullifier_hash: response.data.nullifier_hash,
+          created_at: response.data.created_at,
+          verification_level: response.data.verification_level,
+          message: response.data.message,
+        };
+      } else {
+        return {
+          success: false,
+          message: response.data.message || "Proof verification failed",
+        };
+      }
+    } catch (error) {
+      console.error("Error verifying proof:", error);
       return {
         success: false,
         error:

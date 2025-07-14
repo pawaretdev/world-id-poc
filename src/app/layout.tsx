@@ -9,8 +9,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "World ID Demo",
-  description: "A minimal World ID authentication demo",
+  title: "World ID Authentication",
+  description: "World ID authentication demo",
 };
 
 export default function RootLayout({

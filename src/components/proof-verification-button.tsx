@@ -73,8 +73,8 @@ export function ProofVerificationButton({
       action={actionId}
       onSuccess={onSuccess}
       onError={onError}
-      handleVerify={handleVerify}
-      verification_level={VerificationLevel.Device} // @note change if want to verify with orb
+      // handleVerify={handleVerify}
+      verification_level={VerificationLevel.Orb} // @note change if want to verify with orb
     >
       {({ open }) => (
         <button
